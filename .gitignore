@@ -1,1 +1,5 @@
 .venv
+.env
+.vscode
+data/raw/*
+scripts/__pycache__
