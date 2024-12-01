@@ -1,0 +1,11 @@
+data:
+  create_rawdata: False
+  size: 3
+  raw_filepath: "data//raw//raw_data.json"
+  process_filepath: "data//processed//brent_prices.csv"
+  dataset_filepath: "data//processed//petroleum_prices.csv"
+
+model:
+  sarimax_order: [1, 1, 1]  # p, d, q
+  seasonal_order: [0, 1, 1, 5]  # P, D, Q, s
+  save_path: "models/sarimax_model.pkl"

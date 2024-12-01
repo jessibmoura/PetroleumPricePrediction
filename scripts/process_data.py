@@ -1,13 +1,15 @@
 import json
 import polars as pl
+import pandas as pd
 import pendulum
+from loguru import logger
 
-def organize_data():
+def organize_data(raw_filepath: str, save_filepath: str):
     """ Takes the raw_data and process it """
     dataframe = pl.DataFrame(schema = {"id": pl.String, "date": pl.Date,"price": pl.Float64})
 
     # Open and read the JSON file
-    with open('data/raw/raw_data.json', 'r') as file:
+    with open(raw_filepath, 'r') as file:
         data = json.load(file)
     
     # Process each year at a time
@@ -23,8 +25,5 @@ def organize_data():
                 })
                 dataframe = pl.concat([dataframe, new_row], how="vertical")
     
-    dataframe.write_csv("data/processed/petroleum_price.csv")
-    print("\nCSV file saved succefully!\n")
-
-if __name__ == "__main__":
-    organize_data()
+    dataframe.write_csv(save_filepath)
+    logger.success("Successfully organized data and saved it!")
