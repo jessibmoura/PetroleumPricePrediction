@@ -17,3 +17,51 @@ Before running the project, ensure that you have the following:
     ```bash
     pip install -r requirements.txt
     ```
+
+## Project Structure
+
+The project directory structure is as follows:
+
+```
+
+├── README.md          <- The top-level README for developers using this project.
+├── data
+│   ├── external       <- Data from third party sources, such as OPEC.
+│   ├── processed      <- The final datasets for modeling.
+│   └── raw            <- Raw data obtained from the EIA API.
+│
+│
+├── models             <- Trained models and related files
+│
+├── notebooks          <- Jupyter notebooks for analysis and experimentation
+│
+│
+├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
+│                         generated with `pip freeze > requirements.txt`
+│
+├── pipeline.py        <- Script to run the complete process of training and generating a model
+│
+│
+├── config.yaml        <- Configuration file for model parameters and data paths
+│
+│
+├── app.py             <- Interative dashboard created using Streamlit to show data 
+│
+│
+└── petroleumpriceprediction   <- Main package containing the project logic
+    │
+    ├── __init__.py             <- Makes petroleumpriceprediction a Python module
+    │
+    ├── config.py               <- Store useful variables and configuration
+    │
+    ├── data.py                 <- Scripts to load and process data
+    │
+    └── model.py                <- Class to implement models functionalities
+```
+
+## Running the Project
+
+To train the model and generate predictions, simply run the `pipeline.py` script from the root directory of the project:
+```bash
+python pipeline.py
+```
