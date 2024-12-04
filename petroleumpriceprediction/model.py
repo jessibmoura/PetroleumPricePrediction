@@ -3,14 +3,21 @@ import statsmodels.api as statsmodelapi
 import pickle
 
 class SARIMAXPredictor:
-    def __init__(self, order, seasonal_order, trend=None):
+    """
+    A class to build, train, and use a SARIMAX model for time series forecasting.
+    """
+    def __init__(self, order: tuple, seasonal_order: tuple, trend: str = None):
         """
-        Inicializa o modelo SARIMAX.
+        Initializes the SARIMAX model with specified parameters.
         
-        Args:
-        - order (tuple): Parâmetros ARIMA (p, d, q).
-        - seasonal_order (tuple): Parâmetros sazonais (P, D, Q, s).
-        - trend (str, optional): Componente de tendência ('n', 'c', 't', 'ct').
+        Parameters
+        ----------
+        order : tuple
+            ARIMA parameters (p, d, q).
+        seasonal_order : tuple
+            Seasonal ARIMA parameters (P, D, Q, s).
+        trend : str, optional
+            Trend component ('n', 'c', 't', 'ct'), by default None.
         """
         self.order = order
         self.seasonal_order = seasonal_order
@@ -18,12 +25,15 @@ class SARIMAXPredictor:
         self.model = None
         self.results = None
 
-    def fit(self, data):
+    def fit(self, data: pd.DataFrame):
         """
-        Ajusta o modelo SARIMAX aos dados.
+        Fits the SARIMAX model to the provided data.
         
-        Args:
-        - data (pd.Series or pd.DataFrame): Série temporal para treinar o modelo.
+        Parameters
+        ----------
+        data : pd.DataFrame
+            A DataFrame containing the time series to train the model on. 
+            It must include a column "y" with the target variable.
         """
         self.model = statsmodelapi.tsa.statespace.SARIMAX(
             endog=data["y"],
@@ -34,45 +44,60 @@ class SARIMAXPredictor:
             enforce_invertibility=False
         )
         self.results = self.model.fit(disp=False)
-        print("Model was successfully adjusted!")
+        print("Model was successfully fitted!")
 
-    def forecast(self, steps):
+    def forecast(self, steps: int) -> pd.Series:
         """
-        Realiza previsões.
+        Makes forecasts for the specified number of steps ahead.
         
-        Args:
-        - steps (int): Número de passos (dias/períodos) para prever.
+        Parameters
+        ----------
+        steps : int
+            Number of steps (e.g., days, periods) to forecast.
         
-        Returns:
-        - pd.Series: Previsões para os próximos períodos.
+        Returns
+        -------
+        pd.Series
+            Forecasted values for the specified future periods.
+        
+        Raises
+        ------
+        ValueError
+            If the model has not been fitted yet.
         """
         if not self.results:
-            raise ValueError("Você precisa ajustar o modelo antes de fazer previsões.")
+            raise ValueError("You must fit the model before making forecasts.")
         
         forecast = self.results.get_forecast(steps=steps)
         return forecast.predicted_mean
 
-    def save(self, file_path):
+    def save(self, file_path: str):
         """
-        Salva o modelo treinado em um arquivo.
+        Saves the trained model to a file.
         
-        Args:
-        - file_path (str): Caminho para salvar o modelo.
+        Parameters
+        ----------
+        file_path : str
+            Path where the model should be saved.
         """
         with open(file_path, 'wb') as f:
             pickle.dump(self, f)
-        print(f"Modelo salvo em {file_path}")
+        print(f"Model saved to {file_path}")
 
     @staticmethod
-    def load(file_path):
+    def load(file_path: str) -> 'SARIMAXPredictor':
         """
-        Carrega o modelo treinado de um arquivo.
+        Loads a trained SARIMAX model from a file.
         
-        Args:
-        - file_path (str): Caminho para o arquivo salvo.
+        Parameters
+        ----------
+        file_path : str
+            Path to the saved model file.
         
-        Returns:
-        - SARIMAXPredictor: Instância da classe carregada.
+        Returns
+        -------
+        SARIMAXPredictor
+            An instance of the loaded SARIMAXPredictor class.
         """
         with open(file_path, 'rb') as f:
             return pickle.load(f)

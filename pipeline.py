@@ -1,17 +1,11 @@
 from petroleumpriceprediction.model import SARIMAXPredictor
 from petroleumpriceprediction import data
+from petroleumpriceprediction.config import load_config
 
 from scripts.raw_data import generate
 from scripts.process_data import organize_data
 
-import yaml
 from loguru import logger
-
-def load_config(filepath: str) -> dict:
-    """Carrega as configurações do arquivo .yaml."""
-    with open(filepath, "r") as file:
-        config = yaml.safe_load(file)
-    return config
 
 def main():
     # Carregando as configurações
@@ -27,10 +21,9 @@ def main():
         generate(size,raw_filepath)
 
     # Pre process raw data
-    process_filepath = config["data"]["process_filepath"]
     dataset_filepath = config["data"]["dataset_filepath"]
     logger.info("Preprocessing data...")
-    organize_data(raw_filepath, process_filepath)
+    organize_data(raw_filepath, dataset_filepath)
     logger.success("Dataset for model created!")
 
     # Prepare data for model
@@ -51,7 +44,7 @@ def main():
     print(forecast)
 
     # Saving model file
-    model_filepath = config["model"]["save_path"]
+    model_filepath = config["model"]["path"]
     sarimax.save(model_filepath)
 
 if __name__ == "__main__":
