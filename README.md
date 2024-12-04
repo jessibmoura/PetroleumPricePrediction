@@ -74,3 +74,8 @@ run the following command:
 ```bash
 streamlit run app.py
 ```
+
+
+## GitHub
+
+Link to GitHub project: [PetroleumPricePrediction](https://github.com/jessibmoura/PetroleumPricePrediction).
