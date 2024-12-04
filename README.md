@@ -44,6 +44,7 @@ The project directory structure is as follows:
 │
 ├── config.yaml        <- Configuration file for model parameters and data paths
 │
+├── plan_deploy_models.pdf    <- Planning to do the models deploy
 │
 ├── app.py             <- Interative dashboard created using Streamlit to show data 
 │
