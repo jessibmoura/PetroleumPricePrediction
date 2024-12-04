@@ -65,3 +65,11 @@ To train the model and generate predictions, simply run the `pipeline.py` script
 ```bash
 python pipeline.py
 ```
+
+## Dashboard
+
+You can check the project's dashboard on the link: [Petroleum Price](https://fiap-tc4-petroleumpriceprediction.streamlit.app/), or
+run the following command: 
+```bash
+streamlit run app.py
+```
